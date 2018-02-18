@@ -23,6 +23,8 @@ apt-get update
 
 apt-get install git libreoffice poppler-utils mc
 
+mv documents documents.bak
+
 git clone https://github.com/janbkrejci/document
 
 service odoo restart
