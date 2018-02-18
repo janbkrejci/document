@@ -92,26 +92,26 @@ class IrAttachment(models.Model):
                 pass
         return buf
 
-    def _get_temp_file(suffix):
-	return tempfile._get_default_tempdir() + next(tempfile._get_candidate_names()) + "." + suffix
+    def _get_temp_file(self):
+	return tempfile._get_default_tempdir() + next(tempfile._get_candidate_names())
 
-    def _save_buffer_to_file(buffer, path):
+    def _save_buffer_to_file(self, buffer, path):
 	file = open(path, "w")
 	file.write(buffer)
 	file.close()
 
-    def delete_file(path):
+    def delete_file(self, path):
 	os.remove(path)
 
     def _index_pdf(self, bin_data):
 	'''Index PDF documents'''
 
-	buf = u""
-	filename = _get_temp_file(".pdf")
-	_save_buffer_to_file(bin_data, filename)
+	buf = u"xxx"
+	filename = self._get_temp_file() + ".pdf"
+	self._save_buffer_to_file(bin_data, filename)
 	result = subprocess.run(['pdftotext', filename, '-'], stdout=subprocess.PIPE)
 	buf += result.stdout
-	delete_file(filename)
+	#delete_file(filename)
         #if bin_data.startswith(b'%PDF-'):
         #    f = io.BytesIO(bin_data)
         #    try:
@@ -127,6 +127,6 @@ class IrAttachment(models.Model):
         for ftype in FTYPES:
             buf = getattr(self, '_index_%s' % ftype)(bin_data)
             if buf:
-                return buf
+                return "new" + buf
 
-        return super(IrAttachment, self)._index(bin_data, datas_fname, mimetype)
+        return "old" + super(IrAttachment, self)._index(bin_data, datas_fname, mimetype)
