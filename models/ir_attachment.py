@@ -14,16 +14,6 @@ from odoo import api, models
 _logger = logging.getLogger(__name__)
 FTYPES = ['DOC', 'DOCX', 'PPT', 'PPTX', 'XLS', 'XLSX', 'WPS', 'RTF', 'ODT', 'ODP', 'ODS']
 
-def textToString(element):
-    buff = u""
-    for node in element.childNodes:
-        if node.nodeType == xml.dom.Node.TEXT_NODE:
-            buff += node.nodeValue
-        elif node.nodeType == xml.dom.Node.ELEMENT_NODE:
-            buff += textToString(node)
-    return buff
-
-
 class IrAttachment(models.Model):
     _inherit = 'ir.attachment'
 
@@ -36,20 +26,19 @@ class IrAttachment(models.Model):
         filename = self._get_temp_filename() + ".pdf"
         self._save_buffer_to_file(bin_data, filename)
 
-        result = subprocess.run(['pdftotext', filename, '-'], stdout=subprocess.PIPE)
+        result = subprocess.run(['pdftotext', filename, '-'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         self._delete_file(filename)
         return result.stdout.decode('utf-8')
 
     def _index_office(self, ext, bin_data):
-        '''Index .doc, .xls, .ppt, .wps, .rtf'''
 
         tmp_filename = self._get_temp_filename()
-        in_filename = tmp_filename + "." + ext
+        in_filename = tmp_filename + "." + ext.lower()
         out_filename = tmp_filename + '.txt'
         self._save_buffer_to_file(bin_data, in_filename)
 
-        subprocess.run(['soffice', '--headless', '--convert-to', 'txt', in_filename], stdout=subprocess.PIPE)
-        result = subprocess.run(['cat', out_filename], stdout=subprocess.PIPE)
+        result = subprocess.run(['soffice', '--headless', '--convert-to', 'txt', '--outdir', tempfile._get_default_tempdir() , in_filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        result = subprocess.run(['cat', out_filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         self._delete_file(in_filename)
         self._delete_file(out_filename)
         return result.stdout.decode('utf-8')
