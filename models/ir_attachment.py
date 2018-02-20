@@ -66,4 +66,4 @@ class IrAttachment(models.Model):
         if ext in FTYPES:
             return self._index_office(ext, bin_data)
 
-        return "oldd" + super(IrAttachment, self)._index(bin_data, datas_fname, mimetype)
+        return super(IrAttachment, self)._index(bin_data, datas_fname, mimetype)
