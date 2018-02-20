@@ -12,7 +12,7 @@ import zipfile
 from odoo import api, models
 
 _logger = logging.getLogger(__name__)
-FTYPES = ['DOC', 'DOCX', 'PPT', 'PPTX', 'XLS', , 'XLSX', 'WPS', 'RTF', 'ODT', 'ODP', 'ODS']
+FTYPES = ['DOC', 'DOCX', 'PPT', 'PPTX', 'XLS', 'XLSX', 'WPS', 'RTF', 'ODT', 'ODP', 'ODS']
 
 def textToString(element):
     buff = u""
