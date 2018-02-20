@@ -12,7 +12,7 @@ import zipfile
 from odoo import api, models
 
 _logger = logging.getLogger(__name__)
-FTYPES = ['docx', 'pptx', 'xlsx', 'opendoc', 'pdf']
+FTYPES = ['DOC', 'DOCX', 'PPT', 'PPTX', 'XLS', , 'XLSX', 'WPS', 'RTF', 'ODT', 'ODP', 'ODS']
 
 def textToString(element):
     buff = u""
@@ -27,106 +27,54 @@ def textToString(element):
 class IrAttachment(models.Model):
     _inherit = 'ir.attachment'
 
-    def _index_docx(self, bin_data):
-        '''Index Microsoft .docx documents'''
-        buf = u""
-        f = io.BytesIO(bin_data)
-        if zipfile.is_zipfile(f):
-            try:
-                zf = zipfile.ZipFile(f)
-                content = xml.dom.minidom.parseString(zf.read("word/document.xml"))
-                for val in ["w:p", "w:h", "text:list"]:
-                    for element in content.getElementsByTagName(val):
-                        buf += textToString(element) + "\n"
-            except Exception:
-                pass
-        return buf
-
-    def _index_pptx(self, bin_data):
-        '''Index Microsoft .pptx documents'''
-
-        buf = u""
-        f = io.BytesIO(bin_data)
-        if zipfile.is_zipfile(f):
-            try:
-                zf = zipfile.ZipFile(f)
-                zf_filelist = [x for x in zf.namelist() if x.startswith('ppt/slides/slide')]
-                for i in range(1, len(zf_filelist) + 1):
-                    content = xml.dom.minidom.parseString(zf.read('ppt/slides/slide%s.xml' % i))
-                    for val in ["a:t"]:
-                        for element in content.getElementsByTagName(val):
-                            buf += textToString(element) + "\n"
-            except Exception:
-                pass
-        return buf
-
-    def _index_xlsx(self, bin_data):
-        '''Index Microsoft .xlsx documents'''
-
-        buf = u""
-        f = io.BytesIO(bin_data)
-        if zipfile.is_zipfile(f):
-            try:
-                zf = zipfile.ZipFile(f)
-                content = xml.dom.minidom.parseString(zf.read("xl/sharedStrings.xml"))
-                for val in ["t"]:
-                    for element in content.getElementsByTagName(val):
-                        buf += textToString(element) + "\n"
-            except Exception:
-                pass
-        return buf
-
-    def _index_opendoc(self, bin_data):
-        '''Index OpenDocument documents (.odt, .ods...)'''
-
-        buf = u""
-        f = io.BytesIO(bin_data)
-        if zipfile.is_zipfile(f):
-            try:
-                zf = zipfile.ZipFile(f)
-                content = xml.dom.minidom.parseString(zf.read("content.xml"))
-                for val in ["text:p", "text:h", "text:list"]:
-                    for element in content.getElementsByTagName(val):
-                        buf += textToString(element) + "\n"
-            except Exception:
-                pass
-        return buf
-
-    def _get_temp_file(self):
-	return tempfile._get_default_tempdir() + next(tempfile._get_candidate_names())
-
-    def _save_buffer_to_file(self, buffer, path):
-	file = open(path, "w")
-	file.write(buffer)
-	file.close()
-
-    def delete_file(self, path):
-	os.remove(path)
+    def _delete_file(self, path):
+        os.remove(path)
 
     def _index_pdf(self, bin_data):
-	'''Index PDF documents'''
+        '''Index PDF documents'''
 
-	buf = u"xxx"
-	filename = self._get_temp_file() + ".pdf"
-	self._save_buffer_to_file(bin_data, filename)
-	result = subprocess.run(['pdftotext', filename, '-'], stdout=subprocess.PIPE)
-	buf += result.stdout
-	#delete_file(filename)
-        #if bin_data.startswith(b'%PDF-'):
-        #    f = io.BytesIO(bin_data)
-        #    try:
-        #        pdf = PyPDF2.PdfFileReader(f, overwriteWarnings=False)
-        #        for page in pdf.pages:
-        #            buf += page.extractText()
-        #    except Exception:
-        #        pass
-        return buf
+        filename = self._get_temp_filename() + ".pdf"
+        self._save_buffer_to_file(bin_data, filename)
+
+        result = subprocess.run(['pdftotext', filename, '-'], stdout=subprocess.PIPE)
+        self._delete_file(filename)
+        return result.stdout.decode('utf-8')
+
+    def _index_office(self, ext, bin_data):
+        '''Index .doc, .xls, .ppt, .wps, .rtf'''
+
+        tmp_filename = self._get_temp_filename()
+        in_filename = tmp_filename + "." + ext
+        out_filename = tmp_filename + '.txt'
+        self._save_buffer_to_file(bin_data, in_filename)
+
+        subprocess.run(['soffice', '--headless', '--convert-to', 'txt', in_filename], stdout=subprocess.PIPE)
+        result = subprocess.run(['cat', out_filename], stdout=subprocess.PIPE)
+        self._delete_file(in_filename)
+        self._delete_file(out_filename)
+        return result.stdout.decode('utf-8')
+
+    def _get_temp_filename(self):
+        return tempfile._get_default_tempdir() + "/" + next(tempfile._get_candidate_names())
+
+    def _save_buffer_to_file(self, buffer, path):
+        file = open(path, "wb")
+        file.write(buffer)
+        file.close()
+
+    def _save_buffer_to_file_txt(self, buffer, path):
+        file = open(path, "w")
+        file.write(buffer)
+        file.close()
 
     @api.model
     def _index(self, bin_data, datas_fname, mimetype):
-        for ftype in FTYPES:
-            buf = getattr(self, '_index_%s' % ftype)(bin_data)
-            if buf:
-                return "new" + buf
+        filename, file_extension = os.path.splitext(datas_fname)
+        ext = file_extension[1:].upper()
+        if ext == 'PDF':
+            return self._index_pdf(bin_data)
 
-        return "old" + super(IrAttachment, self)._index(bin_data, datas_fname, mimetype)
+        if ext in FTYPES:
+            return self._index_office(ext, bin_data)
+
+        return "oldd" + super(IrAttachment, self)._index(bin_data, datas_fname, mimetype)
