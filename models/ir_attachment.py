@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+# indexing moved to external tools for better results
+# requires installed packages libreoffice and poppler-utils
 import io
 import logging
-import PyPDF2
 import os
 import tempfile
 import subprocess
@@ -33,13 +34,16 @@ class IrAttachment(models.Model):
     def _index_office(self, ext, bin_data):
 
         tmp_filename = self._get_temp_filename()
-        in_filename = tmp_filename + "." + ext.lower()
+        in_filename = tmp_filename + '.' + ext.lower() + '_'
+        pdf_filename = tmp_filename + '.pdf'
         out_filename = tmp_filename + '.txt'
         self._save_buffer_to_file(bin_data, in_filename)
 
-        result = subprocess.run(['soffice', '--headless', '--convert-to', 'txt', '--outdir', tempfile._get_default_tempdir() , in_filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        result = subprocess.run(['soffice', '--headless', '--convert-to', 'pdf', '--outdir', tempfile._get_default_tempdir() , in_filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        result = subprocess.run(['pdftotext', pdf_filename, out_filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         result = subprocess.run(['cat', out_filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         self._delete_file(in_filename)
+        self._delete_file(pdf_filename)
         self._delete_file(out_filename)
         return result.stdout.decode('utf-8')
 
