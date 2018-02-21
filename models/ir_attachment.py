@@ -13,6 +13,7 @@ import zipfile
 from odoo import api, models
 
 _logger = logging.getLogger(__name__)
+
 FTYPES = ['DOC', 'DOCX', 'PPT', 'PPTX', 'XLS', 'XLSX', 'WPS', 'RTF', 'ODT', 'ODP', 'ODS']
 
 class IrAttachment(models.Model):
@@ -62,7 +63,11 @@ class IrAttachment(models.Model):
 
     @api.model
     def _index(self, bin_data, datas_fname, mimetype):
-        filename, file_extension = os.path.splitext(datas_fname)
+        fname = ""
+        if type(datas_fname).__name__ == 'str':
+            fname = datas_fname
+
+        filename, file_extension = os.path.splitext(fname)
         ext = file_extension[1:].upper()
         if ext == 'PDF':
             return self._index_pdf(bin_data)
