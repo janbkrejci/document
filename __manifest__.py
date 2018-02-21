@@ -49,7 +49,7 @@ stil remain some orphan files to delete. These files can stay in /tmp if the
 conversion crashes.
 
 """,
-    'depends': [],
+    'depends': ['document'],
     'data': [],
     'installable': True,
 }
