@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
+# Copyright 2018 janbkrejci@gmail.com
 # indexing moved to external tools for better results
-# requires installed packages libreoffice and poppler-utils
+# requires installed linux packages libreoffice and poppler-utils
 import io
 import logging
 import os
