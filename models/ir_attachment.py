@@ -28,9 +28,16 @@ class IrAttachment(models.Model):
         filename = self._get_temp_filename() + ".pdf"
         self._save_buffer_to_file(bin_data, filename)
 
-        result = subprocess.run(['pdftotext', filename, '-'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        o = ""
+
+        try:
+            result = subprocess.run(['pdftotext', filename, '-'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            o = result.stdout.decode('utf-8')
+        except:
+            o = 'Error: no "pdftotext" binary found, please install poppler-utils first.'
+
         self._delete_file(filename)
-        return result.stdout.decode('utf-8')
+        return o
 
     def _index_office(self, ext, bin_data):
 
@@ -40,13 +47,20 @@ class IrAttachment(models.Model):
         out_filename = tmp_filename + '.txt'
         self._save_buffer_to_file(bin_data, in_filename)
 
-        result = subprocess.run(['soffice', '--headless', '--convert-to', 'pdf', '--outdir', tempfile._get_default_tempdir() , in_filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        result = subprocess.run(['pdftotext', pdf_filename, out_filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        result = subprocess.run(['cat', out_filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        o = ""
+
+        try:
+            result = subprocess.run(['soffice', '--headless', '--convert-to', 'pdf', '--outdir', tempfile._get_default_tempdir() , in_filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            result = subprocess.run(['pdftotext', pdf_filename, out_filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            result = subprocess.run(['cat', out_filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            o = result.stdout.decode('utf-8')
+        except:
+            o = 'Error: no "soffice" binary found, please install LibreOffice first.'
+
         self._delete_file(in_filename)
         self._delete_file(pdf_filename)
         self._delete_file(out_filename)
-        return result.stdout.decode('utf-8')
+        return o
 
     def _get_temp_filename(self):
         return tempfile._get_default_tempdir() + "/" + next(tempfile._get_candidate_names())
