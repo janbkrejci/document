@@ -8,7 +8,7 @@
     'currency': 'EUR',
     'category': 'Document Management',
     'author': 'Jan B. Krejčí',
-    'external-dependencies': {"bin", ["soffice", "pdftotext"]},
+    'external-dependencies': {'bin': ['soffice', 'pdftotext']},
     'description': """
 Better document indexing using external tools
 =============================================
