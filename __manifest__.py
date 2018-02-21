@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
+# Copyright 2018 janbkrejci@gmail.com
+
 {
     'name': 'Document Indexation using external tools',
     'version': '1.0',
