@@ -1,34 +1,26 @@
 # document-jbk
 Experimental module for Odoo 11
 
-1) identifikovat typ souboru
-2) DOC, RTF, WPS prohnat soffice —headless —convert-to txt
-3) XLSX, PPTX, ODT, ODS, ODP, DOCX zpracovat jako XML
-4) PDF prohnat pdftotext file -
+Indexes attachments using external tools.
 
+Can index: .doc, .docx, .odp, .ods, .odt, .wps, .rtf, .ppt, .pdf, .xls, .xlsx
 
-cd
+## How to install under docker image with odoo11
 
-mkdir filestore
+1) download and run odoo image
+2) docker exec -it -u root odoo11 /bin/bash
+3) cd /usr/lib/python3/dist-packages/odoo/addons
+4) apt-get update
+5) apt-get install git libreoffice poppler-utils
+6) git clone https://github.com/janbkrejci/document
+7) exit bash
+8) docker restart odoo11
+9) done - test it
 
-chmod a+rwx filestore
+Please clean up /tmp directory from time to time, some files may stay there if the conversion fails.
 
-start-odoo-11
+Office documents are indexed by converting them first to .pdf using soffice --headless command.
 
-docker exec -it -u root odoo11 /bin/bash
+Then, .pdf files are converted to text using pdftotext from poppler-utils.
 
-cd /usr/lib/python3/dist-packages/odoo/addons
-
-apt-get update
-
-apt-get install git libreoffice poppler-utils mc
-
-mv documents documents.bak
-
-git clone https://github.com/janbkrejci/document
-
-service odoo restart
-
-
-install module document-jbk
-
+enjoy!
