@@ -12,7 +12,7 @@ Can index: .doc, .docx, .odp, .ods, .odt, .wps, .rtf, .ppt, .pdf, .xls, .xlsx
 3) cd /usr/lib/python3/dist-packages/odoo/addons
 4) apt-get update
 5) apt-get install git libreoffice poppler-utils
-6) git clone https://github.com/janbkrejci/document-external-indexing
+6) git clone https://github.com/janbkrejci/document-indexing
 7) in Odoo, update modules list and install the module
 8) done - test it
 
@@ -20,7 +20,7 @@ Can index: .doc, .docx, .odp, .ods, .odt, .wps, .rtf, .ppt, .pdf, .xls, .xlsx
 
 1) apt-get install git libreoffice poppler-utils
 2) cd addons path
-3) git clone https://github.com/janbkrejci/document-external-indexing
+3) git clone https://github.com/janbkrejci/document-indexing
 4) in Odoo, update modules list and install the module
 5) done - test it
 
