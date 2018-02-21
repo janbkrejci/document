@@ -36,7 +36,11 @@ class IrAttachment(models.Model):
         except:
             o = 'Error: no "pdftotext" binary found, please install poppler-utils first.'
 
-        self._delete_file(filename)
+        try:
+            self._delete_file(filename)
+        except:
+            pass
+
         return o
 
     def _index_office(self, ext, bin_data):
@@ -55,11 +59,15 @@ class IrAttachment(models.Model):
             result = subprocess.run(['cat', out_filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             o = result.stdout.decode('utf-8')
         except:
-            o = 'Error: no "soffice" binary found, please install LibreOffice first.'
+            o = 'Error: no "soffice" of "pdftotext" binary found, please install LibreOffice and poppler-utils first.'
 
-        self._delete_file(in_filename)
-        self._delete_file(pdf_filename)
-        self._delete_file(out_filename)
+        try:
+            self._delete_file(in_filename)
+            self._delete_file(pdf_filename)
+            self._delete_file(out_filename)
+        except:
+            pass
+
         return o
 
     def _get_temp_filename(self):
