@@ -5,6 +5,10 @@ Indexes attachments using external tools.
 
 Can index: .doc, .docx, .odp, .ods, .odt, .wps, .rtf, .ppt, .pdf, .xls, .xlsx
 
+## Licensing information
+
+This module is licensed under MIT license. You can use it as you wish. The module is and always will be free. If you like it and fell like you want to support it, a small donation will be appreciated.
+
 ## How to install under docker image with odoo11
 
 1) download and run odoo image
