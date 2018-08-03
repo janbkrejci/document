@@ -9,7 +9,7 @@ Can index: .doc, .docx, .odp, .ods, .odt, .wps, .rtf, .ppt, .pdf, .xls, .xlsx
 
 1) download and run odoo image
 2) docker exec -it -u root odoo11 /bin/bash
-3) cd /usr/lib/python3/dist-packages/odoo/addons
+3) cd /var/lib/odoo/addons/11.0
 4) apt-get update
 5) apt-get install git libreoffice poppler-utils
 6) git clone https://github.com/janbkrejci/document-indexing
