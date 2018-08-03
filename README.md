@@ -38,4 +38,10 @@ Please clean up /tmp directory from time to time, some files may stay there if t
 The supported documents are indexed by converting them first to .pdf using soffice --headless command,
 then, .pdf files are converted to text using pdftotext from poppler-utils.
 
+The list of words is placed into "index_content" field of "ir.attachment" model.
+
+You can add this field to default search form of "ir.attachment" model in order to be able to search in it's content.
+
+Also, a menu item for model "ir.attachment" will come handy - you can create it manually in development mode (Settings/Database structure/Models, search model for "ir.attachment", click "Create menu" button on the bottom of the form view).
+
 enjoy!
