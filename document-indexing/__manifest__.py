@@ -82,4 +82,7 @@ to be able to run "soffice" and "pdftotext" commands from command line.
     'depends': ['document'],
     'data': [],
     'installable': True,
+    'images':[
+        'static/description/image.png'
+	],
 }
