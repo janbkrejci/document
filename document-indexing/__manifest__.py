@@ -4,7 +4,7 @@
 {
     'name': 'Document Indexing using external tools',
     'version': '1.0',
-    'price': 100,
+    'price': 0,
     'currency': 'EUR',
     'category': 'Document Management',
     'author': 'Jan B. Krejčí',
