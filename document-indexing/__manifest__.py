@@ -4,7 +4,7 @@
 {
     'name': 'Document Indexing using external tools',
     'version': '1.0',
-    'price': 0,
+    'price': 100,
     'currency': 'EUR',
     'category': 'Document Management',
     'author': 'Jan B. Krejčí',
@@ -58,8 +58,8 @@ How to install under docker image with odoo11
 2) docker exec -it -u root odoo11 /bin/bash
 3) cd /var/lib/odoo/addons/11.0
 4) apt-get update
-5) apt-get install git libreoffice poppler-utils
-6) git clone https://github.com/janbkrejci/document-indexing
+5) apt-get install libreoffice poppler-utils
+6) unpack the module into addons directory
 7) in Odoo, update modules list and install the module
 8) done - test it
 
@@ -68,7 +68,7 @@ How to install to on-premise Odoo installation under linux
 
 1) apt-get install git libreoffice poppler-utils
 2) cd addons path
-3) git clone https://github.com/janbkrejci/document-indexing
+3) unpack the module into addons directory
 4) in Odoo, update modules list and install the module
 5) done - test it
 
