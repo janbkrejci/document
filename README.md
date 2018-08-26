@@ -7,15 +7,7 @@ Can index: .doc, .docx, .odp, .ods, .odt, .wps, .rtf, .ppt, .pdf, .xls, .xlsx
 
 ## Licensing information
 
-This module is licensed under MIT license. You can use it as you wish. The module is and always will be free. If you like it and fell like you want to support it, a small donation will be appreciated. See http://www.hodinovy-reditel.cz page, there is a PayPal "Donate" button to use.
-
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-<input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="hosted_button_id" value="XSJGWES2VMSJL">
-<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-<img alt="" border="0" src="https://www.paypalobjects.com/cs_CZ/i/scr/pixel.gif" width="1" height="1">
-</form>
-
+This module is licensed under MIT license. You can use it as you wish.
 
 ## How to install under docker image with odoo11
 
