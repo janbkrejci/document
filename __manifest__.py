@@ -19,7 +19,7 @@ file types for fulltext search, moreover the indexing of .pdf
 files is far more reliable.
 
 In order to use this module, you have to install libreoffice and
-poppler-utils to your underlying operating system, first.
+poppler-utils to your operating system, first.
 
 Make sure you can run "soffice" and "pdftotext" from command line.
 
@@ -44,9 +44,9 @@ The indexing works in two steps. First, the document is translated do .pdf using
 "soffice --headless" command, then the text is extracted from the .pdf by using
 "pdftotext" from poppler-utils.
 
-Please have a look into /tmp directory from time to time, since there can
-stil remain some orphan files to delete. These files can stay in /tmp if the
-conversion crashes.
+Please take a look into /tmp directory from time to time, since there can
+stil be some orphan files that you may want delete manually. These files can remain
+in /tmp if the conversion crashes for some reason.
 
 """,
     'depends': ['document'],
