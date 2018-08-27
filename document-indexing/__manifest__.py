@@ -14,12 +14,12 @@ Better document indexing using external tools
 =============================================
 
 This module replaces the default attachment indexing logic using
-calls to external tools. This enables Odoo to index much more
+calls to external tools. This enables Odoo to index many more
 file types for fulltext search, moreover the indexing of .pdf
 files is far more reliable.
 
 In order to use this module, you have to install libreoffice and
-poppler-utils to your operating system, first.
+poppler-utils to your operating system first.
 
 Make sure you can run "soffice" and "pdftotext" from command line.
 
@@ -38,15 +38,15 @@ The module indexes these document types:
 * .ppt,
 * .pptx
 
-all other types are passed to default processing by ir.attachment model.
+Other types are passed to default processing by ir.attachment model.
 
-The indexing works in two steps. First, the document is translated do .pdf using
+The indexing works in two steps. First, the document is translated to .pdf using
 "soffice --headless" command, then the text is extracted from the .pdf by using
 "pdftotext" from poppler-utils.
 
 Please take a look into /tmp directory from time to time, since there can
-stil be some orphan files that you may want delete manually. These files can remain
-in /tmp if the conversion crashes for some reason.
+still be some orphan files that you may want to delete manually. These files can remain
+in /tmp if the conversion to .pdf crashes for some reason.
 
 Installation
 ============
@@ -58,7 +58,7 @@ How to install under docker image with odoo11
 2) docker exec -it -u root odoo11 /bin/bash
 3) apt-get update
 4) apt-get install libreoffice poppler-utils
-5] cd to Odoo addons path
+5) cd to Odoo addons path
 6) unpack the module
 7) in Odoo, update modules list and install the module
 8) done - test it
