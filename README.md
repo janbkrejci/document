@@ -1,5 +1,5 @@
 # document-indexing
-A module for Odoo 11.
+A module for Odoo 11 and 12.
 
 Indexes attachments using external tools.
 
