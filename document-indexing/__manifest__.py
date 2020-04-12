@@ -66,7 +66,7 @@ How to install under docker image with odoo11
 How to install to on-premise Odoo installation under linux
 ----------------------------------------------------------
 
-1) apt-get install git libreoffice poppler-utils
+1) apt-get install libreoffice poppler-utils
 2) cd to Odoo addons path
 3) unpack the module
 4) in Odoo, update modules list and install the module
@@ -75,7 +75,7 @@ How to install to on-premise Odoo installation under linux
 How to install to on-premise Odoo installation under Windows
 ------------------------------------------------------------
 
-..no idea, just try to make sure that you have everything needed
+...no idea, just try to make sure that you have everything needed
 to be able to run "soffice" and "pdftotext" commands from command line.
 
 """,
