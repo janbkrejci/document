@@ -55,7 +55,7 @@ How to install under docker image with odoo11
 ---------------------------------------------
 
 1) download and run odoo image
-2) docker exec -it -u root odoo11 /bin/bash
+2) docker exec -it -u root odoo12 /bin/bash
 3) apt-get update
 4) apt-get install libreoffice poppler-utils
 5) cd to Odoo addons path
